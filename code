@@ -1,557 +1,571 @@
 SecurityAuditApp/
 │
-├── build.gradle.kts (Project level)
-├── settings.gradle.kts
-├── gradle.properties
-├── gradle/
-│   └── wrapper/
-│       ├── gradle-wrapper.jar
-│       └── gradle-wrapper.properties
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          1. THƯ MỤC APP (Ứng dụng)                           ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 │
-├── app/
-│   ├── build.gradle.kts
-│   ├── proguard-rules.pro
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── AndroidManifest.xml
-│   │   │   │
-│   │   │   ├── java/com/security/app/
-│   │   │   │   ├── MainActivity.kt
-│   │   │   │   ├── SecurityApplication.kt
-│   │   │   │   │
-│   │   │   │   ├── common/
-│   │   │   │   │   ├── constants/
-│   │   │   │   │   │   ├── AppConstants.kt
-│   │   │   │   │   │   ├── SecurityCriteria.kt
-│   │   │   │   │   │   ├── EvaluationCriteria.kt
-│   │   │   │   │   │   └── RoleConstants.kt
-│   │   │   │   │   ├── extensions/
-│   │   │   │   │   │   ├── ContextExt.kt
-│   │   │   │   │   │   ├── StringExt.kt
-│   │   │   │   │   │   └── ViewExt.kt
-│   │   │   │   │   ├── utils/
-│   │   │   │   │   │   ├── EncryptionUtils.kt
-│   │   │   │   │   │   ├── NetworkUtils.kt
-│   │   │   │   │   │   ├── PermissionUtils.kt
-│   │   │   │   │   │   └── BiometricUtils.kt
-│   │   │   │   │   └── base/
-│   │   │   │   │       ├── BaseActivity.kt
-│   │   │   │   │       ├── BaseFragment.kt
-│   │   │   │   │       ├── BaseViewModel.kt
-│   │   │   │   │       └── BaseAdapter.kt
-│   │   │   │   │
-│   │   │   │   ├── data/
-│   │   │   │   │   ├── local/
-│   │   │   │   │   │   ├── database/
-│   │   │   │   │   │   │   ├── AppDatabase.kt
-│   │   │   │   │   │   │   ├── Converters.kt
-│   │   │   │   │   │   │   ├── dao/
-│   │   │   │   │   │   │   │   ├── UserDao.kt
-│   │   │   │   │   │   │   │   ├── SessionDao.kt
-│   │   │   │   │   │   │   │   ├── LogDao.kt
-│   │   │   │   │   │   │   │   ├── DeviceDao.kt
-│   │   │   │   │   │   │   │   ├── ReportDao.kt
-│   │   │   │   │   │   │   │   └── ScanResultDao.kt
-│   │   │   │   │   │   │   └── entities/
-│   │   │   │   │   │   │       ├── UserEntity.kt
-│   │   │   │   │   │   │       ├── SessionEntity.kt
-│   │   │   │   │   │   │       ├── SecurityLogEntity.kt
-│   │   │   │   │   │   │       ├── TrustedDeviceEntity.kt
-│   │   │   │   │   │   │       ├── ReportEntity.kt
-│   │   │   │   │   │   │       └── WebScanEntity.kt
-│   │   │   │   │   │   ├── preferences/
-│   │   │   │   │   │   │   ├── EncryptedPrefs.kt
-│   │   │   │   │   │   │   └── AppPrefs.kt
-│   │   │   │   │   │   └── file/
-│   │   │   │   │   │       ├── EncryptedFileManager.kt
-│   │   │   │   │   │       ├── SecureContainer.kt
-│   │   │   │   │   │       └── FileEncryptionEngine.kt
-│   │   │   │   │   │
-│   │   │   │   │   └── remote/
-│   │   │   │   │       ├── api/
-│   │   │   │   │       │   ├── ApiService.kt
-│   │   │   │   │       │   ├── RetrofitClient.kt
-│   │   │   │   │       │   └── endpoints/
-│   │   │   │   │       │       ├── PolicyEndpoint.kt
-│   │   │   │   │       │       ├── ReportEndpoint.kt
-│   │   │   │   │       │       └── UpdateEndpoint.kt
-│   │   │   │   │       ├── model/
-│   │   │   │   │       │   ├── PolicyResponse.kt
-│   │   │   │   │       │   ├── UpdateResponse.kt
-│   │   │   │   │       │   └── LeakedPasswordResponse.kt
-│   │   │   │   │       └── repository/
-│   │   │   │   │           ├── UserRepository.kt
-│   │   │   │   │           ├── SecurityRepository.kt
-│   │   │   │   │           ├── ScanRepository.kt
-│   │   │   │   │           └── PolicyRepository.kt
-│   │   │   │   │
-│   │   │   │   ├── domain/
-│   │   │   │   │   ├── model/
-│   │   │   │   │   │   ├── User.kt
-│   │   │   │   │   │   ├── SecurityScore.kt
-│   │   │   │   │   │   ├── Vulnerability.kt
-│   │   │   │   │   │   └── Role.kt
-│   │   │   │   │   └── usecase/
-│   │   │   │   │       ├── auth/
-│   │   │   │   │       │   ├── LoginUseCase.kt
-│   │   │   │   │       │   ├── ValidateMfaUseCase.kt
-│   │   │   │   │       │   ├── CheckBiometricUseCase.kt
-│   │   │   │   │       │   └── GetCurrentRoleUseCase.kt
-│   │   │   │   │       ├── scan/
-│   │   │   │   │       │   ├── ScanWebUseCase.kt
-│   │   │   │   │       │   ├── CheckPasswordStrengthUseCase.kt
-│   │   │   │   │       │   └── ScanMalwareUseCase.kt
-│   │   │   │   │       ├── encryption/
-│   │   │   │   │       │   ├── EncryptFileUseCase.kt
-│   │   │   │   │       │   ├── DecryptFileUseCase.kt
-│   │   │   │   │       │   └── CreateSecureContainerUseCase.kt
-│   │   │   │   │       ├── evaluation/
-│   │   │   │   │       │   ├── EvaluateAllCriteriaUseCase.kt
-│   │   │   │   │       │   ├── EvaluateSecurityCriteriaUseCase.kt
-│   │   │   │   │       │   └── GenerateReportUseCase.kt
-│   │   │   │   │       └── role/
-│   │   │   │   │           ├── GetMenuByRoleUseCase.kt
-│   │   │   │   │           ├── CheckPermissionUseCase.kt
-│   │   │   │   │           └── GetRoleBasedUiUseCase.kt
-│   │   │   │   │
-│   │   │   │   ├── ui/
-│   │   │   │   │   ├── rolebased/
-│   │   │   │   │   │   ├── RoleBasedActivity.kt
-│   │   │   │   │   │   ├── RoleMenuManager.kt
-│   │   │   │   │   │   ├── RolePermissionChecker.kt
-│   │   │   │   │   │   ├── superadmin/
-│   │   │   │   │   │   │   ├── SuperAdminDashboardFragment.kt
-│   │   │   │   │   │   │   ├── SuperAdminDashboardViewModel.kt
-│   │   │   │   │   │   │   ├── UserManagementFragment.kt
-│   │   │   │   │   │   │   └── UserManagementViewModel.kt
-│   │   │   │   │   │   ├── secadmin/
-│   │   │   │   │   │   │   ├── SecAdminDashboardFragment.kt
-│   │   │   │   │   │   │   ├── SecAdminDashboardViewModel.kt
-│   │   │   │   │   │   │   ├── PolicyConfigFragment.kt
-│   │   │   │   │   │   │   └── PolicyConfigViewModel.kt
-│   │   │   │   │   │   ├── auditor/
-│   │   │   │   │   │   │   ├── AuditorDashboardFragment.kt
-│   │   │   │   │   │   │   ├── AuditorDashboardViewModel.kt
-│   │   │   │   │   │   │   ├── ReadOnlyReportFragment.kt
-│   │   │   │   │   │   │   └── ReadOnlyReportViewModel.kt
-│   │   │   │   │   │   ├── operator/
-│   │   │   │   │   │   │   ├── OperatorDashboardFragment.kt
-│   │   │   │   │   │   │   ├── OperatorDashboardViewModel.kt
-│   │   │   │   │   │   │   ├── ActionPanelFragment.kt
-│   │   │   │   │   │   │   └── ActionPanelViewModel.kt
-│   │   │   │   │   │   ├── viewer/
-│   │   │   │   │   │   │   ├── ViewerDashboardFragment.kt
-│   │   │   │   │   │   │   ├── ViewerDashboardViewModel.kt
-│   │   │   │   │   │   │   └── ReadOnlyDashboardFragment.kt
-│   │   │   │   │   │   └── deviceuser/
-│   │   │   │   │   │       ├── DeviceUserDashboardFragment.kt
-│   │   │   │   │   │       ├── DeviceUserDashboardViewModel.kt
-│   │   │   │   │   │       ├── PersonalSecurityFragment.kt
-│   │   │   │   │   │       └── PersonalSecurityViewModel.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── auth/
-│   │   │   │   │   │   ├── LoginFragment.kt
-│   │   │   │   │   │   ├── LoginViewModel.kt
-│   │   │   │   │   │   ├── RegisterFragment.kt
-│   │   │   │   │   │   ├── RegisterViewModel.kt
-│   │   │   │   │   │   ├── ForgotPasswordFragment.kt
-│   │   │   │   │   │   ├── MfaVerifyFragment.kt
-│   │   │   │   │   │   ├── BiometricAuthDialog.kt
-│   │   │   │   │   │   └── account/
-│   │   │   │   │   │       ├── AccountTypeSelector.kt
-│   │   │   │   │   │       └── AccountSwitcher.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── dashboard/
-│   │   │   │   │   │   ├── DashboardFragment.kt
-│   │   │   │   │   │   ├── DashboardViewModel.kt
-│   │   │   │   │   │   └── DashboardAdapter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── session/
-│   │   │   │   │   │   ├── SessionManagerFragment.kt
-│   │   │   │   │   │   ├── SessionManagerViewModel.kt
-│   │   │   │   │   │   └── SessionAdapter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── device/
-│   │   │   │   │   │   ├── TrustedDeviceFragment.kt
-│   │   │   │   │   │   ├── TrustedDeviceViewModel.kt
-│   │   │   │   │   │   └── DeviceAdapter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── mfa/
-│   │   │   │   │   │   ├── MfaSetupFragment.kt
-│   │   │   │   │   │   ├── MfaVerifyFragment.kt
-│   │   │   │   │   │   ├── MfaViewModel.kt
-│   │   │   │   │   │   └── totp/
-│   │   │   │   │   │       ├── TotpGenerator.kt
-│   │   │   │   │   │       └── QrCodeScanner.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── history/
-│   │   │   │   │   │   ├── SecurityHistoryFragment.kt
-│   │   │   │   │   │   ├── SecurityHistoryViewModel.kt
-│   │   │   │   │   │   ├── LogAdapter.kt
-│   │   │   │   │   │   └── filter/
-│   │   │   │   │   │       ├── LogFilterDialog.kt
-│   │   │   │   │   │       └── LogFilterOptions.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── report/
-│   │   │   │   │   │   ├── ReportFragment.kt
-│   │   │   │   │   │   ├── ReportViewModel.kt
-│   │   │   │   │   │   ├── pdf/
-│   │   │   │   │   │   │   ├── PdfGenerator.kt
-│   │   │   │   │   │   │   └── PdfExportService.kt
-│   │   │   │   │   │   └── json/
-│   │   │   │   │   │       └── JsonExporter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── encryption/
-│   │   │   │   │   │   ├── FileEncryptionFragment.kt
-│   │   │   │   │   │   ├── FileEncryptionViewModel.kt
-│   │   │   │   │   │   ├── SecureContainerFragment.kt
-│   │   │   │   │   │   ├── SecureContainerViewModel.kt
-│   │   │   │   │   │   ├── adapter/
-│   │   │   │   │   │   │   ├── FileBrowserAdapter.kt
-│   │   │   │   │   │   │   └── ContainerAdapter.kt
-│   │   │   │   │   │   └── components/
-│   │   │   │   │   │       ├── EncryptionProgressDialog.kt
-│   │   │   │   │   │       ├── KeyManagementDialog.kt
-│   │   │   │   │   │       └── ShamirShareDialog.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── malware/
-│   │   │   │   │   │   ├── MalwareScanFragment.kt
-│   │   │   │   │   │   ├── MalwareScanViewModel.kt
-│   │   │   │   │   │   ├── scanner/
-│   │   │   │   │   │   │   ├── ApkAnalyzer.kt
-│   │   │   │   │   │   │   ├── PermissionAnalyzer.kt
-│   │   │   │   │   │   │   └── SignatureChecker.kt
-│   │   │   │   │   │   └── MalwareResultAdapter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── password/
-│   │   │   │   │   │   ├── PasswordManagerFragment.kt
-│   │   │   │   │   │   ├── PasswordManagerViewModel.kt
-│   │   │   │   │   │   ├── PasswordEntryDialog.kt
-│   │   │   │   │   │   ├── adapter/
-│   │   │   │   │   │   │   └── PasswordEntryAdapter.kt
-│   │   │   │   │   │   └── keystore/
-│   │   │   │   │   │       ├── KeystoreManager.kt
-│   │   │   │   │   │       └── StrongBoxManager.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── network/
-│   │   │   │   │   │   ├── NetworkMonitorFragment.kt
-│   │   │   │   │   │   ├── NetworkMonitorViewModel.kt
-│   │   │   │   │   │   ├── detector/
-│   │   │   │   │   │   │   ├── RootDetector.kt
-│   │   │   │   │   │   │   ├── ProxyDetector.kt
-│   │   │   │   │   │   │   ├── MitmDetector.kt
-│   │   │   │   │   │   │   └── VpnDetector.kt
-│   │   │   │   │   │   └── service/
-│   │   │   │   │   │       └── NetworkMonitorService.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── policy/
-│   │   │   │   │   │   ├── SecurityPolicyFragment.kt
-│   │   │   │   │   │   ├── SecurityPolicyViewModel.kt
-│   │   │   │   │   │   ├── PolicyUpdater.kt
-│   │   │   │   │   │   └── PolicyViewerAdapter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── backup/
-│   │   │   │   │   │   ├── BackupFragment.kt
-│   │   │   │   │   │   ├── BackupViewModel.kt
-│   │   │   │   │   │   ├── engine/
-│   │   │   │   │   │   │   ├── BackupEngine.kt
-│   │   │   │   │   │   │   ├── RestoreEngine.kt
-│   │   │   │   │   │   │   └── E2eeBackup.kt
-│   │   │   │   │   │   └── schedule/
-│   │   │   │   │   │       ├── BackupScheduler.kt
-│   │   │   │   │   │       └── BackupWorker.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── emergency/
-│   │   │   │   │   │   ├── EmergencyFragment.kt
-│   │   │   │   │   │   ├── EmergencyViewModel.kt
-│   │   │   │   │   │   ├── RemoteWipeManager.kt
-│   │   │   │   │   │   ├── LockdownManager.kt
-│   │   │   │   │   │   └── EmergencyContactDialog.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── webscanner/
-│   │   │   │   │   │   ├── WebScannerFragment.kt
-│   │   │   │   │   │   ├── WebScannerViewModel.kt
-│   │   │   │   │   │   ├── engines/
-│   │   │   │   │   │   │   ├── XssEngine.kt
-│   │   │   │   │   │   │   ├── SqlInjectionEngine.kt
-│   │   │   │   │   │   │   ├── FileInclusionEngine.kt
-│   │   │   │   │   │   │   ├── CommandInjectionEngine.kt
-│   │   │   │   │   │   │   ├── HeaderChecker.kt
-│   │   │   │   │   │   │   └── ApiSecurityEngine.kt
-│   │   │   │   │   │   ├── model/
-│   │   │   │   │   │   │   ├── Vulnerability.kt
-│   │   │   │   │   │   │   └── ScanReport.kt
-│   │   │   │   │   │   └── adapter/
-│   │   │   │   │   │       └── VulnerabilityAdapter.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── passwordmeter/
-│   │   │   │   │   │   ├── PasswordMeterFragment.kt
-│   │   │   │   │   │   ├── PasswordMeterViewModel.kt
-│   │   │   │   │   │   ├── strength/
-│   │   │   │   │   │   │   ├── EntropyCalculator.kt
-│   │   │   │   │   │   │   ├── PatternDetector.kt
-│   │   │   │   │   │   │   ├── DictionaryChecker.kt
-│   │   │   │   │   │   │   └── LeakedChecker.kt
-│   │   │   │   │   │   ├── ui/
-│   │   │   │   │   │   │   ├── PasswordStrengthBar.kt
-│   │   │   │   │   │   │   └── StrengthIndicatorView.kt
-│   │   │   │   │   │   └── result/
-│   │   │   │   │   │       └── PasswordResultDialog.kt
-│   │   │   │   │   │
-│   │   │   │   │   ├── settings/
-│   │   │   │   │   │   ├── SettingsFragment.kt
-│   │   │   │   │   │   ├── SettingsViewModel.kt
-│   │   │   │   │   │   └── preferences/
-│   │   │   │   │   │       ├── SecurityPrefs.kt
-│   │   │   │   │   │       └── NotificationPrefs.kt
-│   │   │   │   │   │
-│   │   │   │   │   └── common/
-│   │   │   │   │       ├── LoadingDialog.kt
-│   │   │   │   │       ├── ErrorDialog.kt
-│   │   │   │   │       ├── ConfirmDialog.kt
-│   │   │   │   │       ├── CustomSnackbar.kt
-│   │   │   │   │       └── SecurityToast.kt
-│   │   │   │   │
-│   │   │   │   ├── network/
-│   │   │   │   │   ├── wrapper/
-│   │   │   │   │   │   ├── ApiWrapper.kt
-│   │   │   │   │   │   ├── SecurityApiWrapper.kt
-│   │   │   │   │   │   ├── WebScannerWrapper.kt
-│   │   │   │   │   │   ├── PasswordWrapper.kt
-│   │   │   │   │   │   └── SyncWrapper.kt
-│   │   │   │   │   ├── interceptors/
-│   │   │   │   │   │   ├── AuthInterceptor.kt
-│   │   │   │   │   │   ├── EncryptionInterceptor.kt
-│   │   │   │   │   │   └── LoggingInterceptor.kt
-│   │   │   │   │   └── models/
-│   │   │   │   │       ├── ApiResponse.kt
-│   │   │   │   │       ├── ScanRequest.kt
-│   │   │   │   │       ├── ScanResponse.kt
-│   │   │   │   │       └── PasswordCheckRequest.kt
-│   │   │   │   │
-│   │   │   │   ├── security/
-│   │   │   │   │   ├── crypto/
-│   │   │   │   │   │   ├── AesEncryption.kt
-│   │   │   │   │   │   ├── ChaCha20Encryption.kt
-│   │   │   │   │   │   ├── KeyGenerator.kt
-│   │   │   │   │   │   ├── KeyManager.kt
-│   │   │   │   │   │   ├── ShamirSecretSharing.kt
-│   │   │   │   │   │   └── SecureRandom.kt
-│   │   │   │   │   ├── keystore/
-│   │   │   │   │   │   ├── KeystoreHelper.kt
-│   │   │   │   │   │   ├── StrongBoxHelper.kt
-│   │   │   │   │   │   └── BiometricKeystore.kt
-│   │   │   │   │   ├── integrity/
-│   │   │   │   │   │   ├── PlayIntegrityChecker.kt
-│   │   │   │   │   │   ├── SafetyNetHelper.kt
-│   │   │   │   │   │   └── AppIntegrityVerifier.kt
-│   │   │   │   │   ├── obfuscation/
-│   │   │   │   │   │   ├── ProguardConfig.kt
-│   │   │   │   │   │   └── StringObfuscator.kt
-│   │   │   │   │   └── validator/
-│   │   │   │   │       ├── InputValidator.kt
-│   │   │   │   │       ├── PasswordValidator.kt
-│   │   │   │   │       └── UrlValidator.kt
-│   │   │   │   │
-│   │   │   │   ├── evaluation/
-│   │   │   │   │   ├── EvaluationEngine.kt
-│   │   │   │   │   ├── criteria/
-│   │   │   │   │   │   ├── CriteriaGroup.kt
-│   │   │   │   │   │   ├── Criterion.kt
-│   │   │   │   │   │   └── CriterionWeight.kt
-│   │   │   │   │   ├── calculator/
-│   │   │   │   │   │   ├── ScoreCalculator.kt
-│   │   │   │   │   │   ├── WeightedScoreCalculator.kt
-│   │   │   │   │   │   └── CategoryScoreCalculator.kt
-│   │   │   │   │   ├── checker/
-│   │   │   │   │   │   ├── PasswordCriteriaChecker.kt
-│   │   │   │   │   │   ├── WebXssCriteriaChecker.kt
-│   │   │   │   │   │   ├── WebSqlCriteriaChecker.kt
-│   │   │   │   │   │   ├── FileInclusionChecker.kt
-│   │   │   │   │   │   ├── HeaderSecurityChecker.kt
-│   │   │   │   │   │   ├── ApiSecurityChecker.kt
-│   │   │   │   │   │   ├── EncryptionChecker.kt
-│   │   │   │   │   │   ├── AuthenticationChecker.kt
-│   │   │   │   │   │   ├── NetworkChecker.kt
-│   │   │   │   │   │   ├── AntiTamperChecker.kt
-│   │   │   │   │   │   ├── SessionChecker.kt
-│   │   │   │   │   │   ├── LoggingChecker.kt
-│   │   │   │   │   │   ├── BackupChecker.kt
-│   │   │   │   │   │   └── PolicyChecker.kt
-│   │   │   │   │   └── report/
-│   │   │   │   │       ├── DetailedReportGenerator.kt
-│   │   │   │   │       ├── SummaryReportGenerator.kt
-│   │   │   │   │       └── CriteriaStatus.kt
-│   │   │   │   │
-│   │   │   │   ├── di/
-│   │   │   │   │   ├── AppModule.kt
-│   │   │   │   │   ├── DatabaseModule.kt
-│   │   │   │   │   ├── NetworkModule.kt
-│   │   │   │   │   ├── SecurityModule.kt
-│   │   │   │   │   ├── RepositoryModule.kt
-│   │   │   │   │   └── UseCaseModule.kt
-│   │   │   │   │
-│   │   │   │   ├── service/
-│   │   │   │   │   ├── SecurityMonitorService.kt
-│   │   │   │   │   ├── AutoScanWorker.kt
-│   │   │   │   │   ├── ReportScheduler.kt
-│   │   │   │   │   ├── PolicySyncWorker.kt
-│   │   │   │   │   └── NotificationHelper.kt
-│   │   │   │   │
-│   │   │   │   ├── broadcast/
-│   │   │   │   │   ├── BootReceiver.kt
-│   │   │   │   │   ├── ScreenLockReceiver.kt
-│   │   │   │   │   └── PackageChangeReceiver.kt
-│   │   │   │   │
-│   │   │   │   └── widget/
-│   │   │   │       ├── SecurityScoreWidget.kt
-│   │   │   │       └── QuickScanWidget.kt
-│   │   │   │
-│   │   │   ├── res/
-│   │   │   │   ├── layout/
-│   │   │   │   │   ├── activity_main.xml
-│   │   │   │   │   ├── activity_role_based.xml
-│   │   │   │   │   ├── fragment_dashboard.xml
-│   │   │   │   │   ├── fragment_login.xml
-│   │   │   │   │   ├── fragment_register.xml
-│   │   │   │   │   ├── fragment_web_scanner.xml
-│   │   │   │   │   ├── fragment_password_meter.xml
-│   │   │   │   │   ├── fragment_file_encryption.xml
-│   │   │   │   │   ├── dialog_encryption_key.xml
-│   │   │   │   │   ├── nav_header_sidebar.xml
-│   │   │   │   │   │
-│   │   │   │   │   ├── superadmin/
-│   │   │   │   │   │   ├── fragment_superadmin_dashboard.xml
-│   │   │   │   │   │   └── fragment_user_management.xml
-│   │   │   │   │   ├── secadmin/
-│   │   │   │   │   │   ├── fragment_secadmin_dashboard.xml
-│   │   │   │   │   │   └── fragment_policy_config.xml
-│   │   │   │   │   ├── auditor/
-│   │   │   │   │   │   ├── fragment_auditor_dashboard.xml
-│   │   │   │   │   │   └── fragment_readonly_report.xml
-│   │   │   │   │   ├── operator/
-│   │   │   │   │   │   ├── fragment_operator_dashboard.xml
-│   │   │   │   │   │   └── fragment_action_panel.xml
-│   │   │   │   │   ├── viewer/
-│   │   │   │   │   │   ├── fragment_viewer_dashboard.xml
-│   │   │   │   │   │   └── fragment_readonly_dashboard.xml
-│   │   │   │   │   └── deviceuser/
-│   │   │   │   │       ├── fragment_deviceuser_dashboard.xml
-│   │   │   │   │       └── fragment_personal_security.xml
-│   │   │   │   │
-│   │   │   │   ├── menu/
-│   │   │   │   │   ├── navigation_menu_superadmin.xml
-│   │   │   │   │   ├── navigation_menu_secadmin.xml
-│   │   │   │   │   ├── navigation_menu_auditor.xml
-│   │   │   │   │   ├── navigation_menu_operator.xml
-│   │   │   │   │   ├── navigation_menu_viewer.xml
-│   │   │   │   │   └── navigation_menu_deviceuser.xml
-│   │   │   │   │
-│   │   │   │   ├── navigation/
-│   │   │   │   │   ├── nav_graph_superadmin.xml
-│   │   │   │   │   ├── nav_graph_secadmin.xml
-│   │   │   │   │   ├── nav_graph_auditor.xml
-│   │   │   │   │   ├── nav_graph_operator.xml
-│   │   │   │   │   ├── nav_graph_viewer.xml
-│   │   │   │   │   └── nav_graph_deviceuser.xml
-│   │   │   │   │
-│   │   │   │   ├── values/
-│   │   │   │   │   ├── colors.xml
-│   │   │   │   │   ├── strings.xml
-│   │   │   │   │   ├── themes.xml
-│   │   │   │   │   ├── dimens.xml
-│   │   │   │   │   └── security_criteria.xml
-│   │   │   │   │
-│   │   │   │   ├── drawable/
-│   │   │   │   │   ├── ic_launcher_foreground.xml
-│   │   │   │   │   ├── ic_launcher_background.xml
-│   │   │   │   │   ├── ic_menu_dashboard.xml
-│   │   │   │   │   ├── ic_menu_webscan.xml
-│   │   │   │   │   ├── ic_menu_password.xml
-│   │   │   │   │   ├── ic_menu_encryption.xml
-│   │   │   │   │   ├── ic_role_superadmin.xml
-│   │   │   │   │   ├── ic_role_secadmin.xml
-│   │   │   │   │   ├── ic_role_auditor.xml
-│   │   │   │   │   ├── ic_role_operator.xml
-│   │   │   │   │   ├── ic_role_viewer.xml
-│   │   │   │   │   ├── ic_role_deviceuser.xml
-│   │   │   │   │   └── ...
-│   │   │   │   │
-│   │   │   │   ├── drawable-v24/
-│   │   │   │   │   └── ic_launcher_foreground.xml
-│   │   │   │   │
-│   │   │   │   ├── mipmap-hdpi/
-│   │   │   │   │   ├── ic_launcher.webp
-│   │   │   │   │   └── ic_launcher_round.webp
-│   │   │   │   │
-│   │   │   │   ├── mipmap-mdpi/
-│   │   │   │   │   ├── ic_launcher.webp
-│   │   │   │   │   └── ic_launcher_round.webp
-│   │   │   │   │
-│   │   │   │   ├── mipmap-xhdpi/
-│   │   │   │   │   ├── ic_launcher.webp
-│   │   │   │   │   └── ic_launcher_round.webp
-│   │   │   │   │
-│   │   │   │   ├── mipmap-xxhdpi/
-│   │   │   │   │   ├── ic_launcher.webp
-│   │   │   │   │   └── ic_launcher_round.webp
-│   │   │   │   │
-│   │   │   │   ├── mipmap-xxxhdpi/
-│   │   │   │   │   ├── ic_launcher.webp
-│   │   │   │   │   └── ic_launcher_round.webp
-│   │   │   │   │
-│   │   │   │   ├── raw/
-│   │   │   │   │   ├── default_policy.json
-│   │   │   │   │   ├── common_passwords.txt
-│   │   │   │   │   └── xss_payloads.txt
-│   │   │   │   │
-│   │   │   │   └── xml/
-│   │   │   │       ├── backup_rules.xml
-│   │   │   │       ├── data_extraction_rules.xml
-│   │   │   │       └── widget_info.xml
-│   │   │   │
-│   │   │   └── assets/
-│   │   │       ├── ml_models/
-│   │   │       │   └── xss_detector.tflite
-│   │   │       └── security/
-│   │   │           └── ca_certificates.bks
-│   │   │
-│   │   ├── test/java/com/security/app/
-│   │   │   ├── ExampleUnitTest.kt
-│   │   │   ├── security/
-│   │   │   │   ├── EncryptionTest.kt
-│   │   │   │   ├── PasswordStrengthTest.kt
-│   │   │   │   └── WebScannerTest.kt
-│   │   │   ├── evaluation/
-│   │   │   │   └── CriteriaEvaluationTest.kt
-│   │   │   └── role/
-│   │   │       ├── RoleBasedUiTest.kt
-│   │   │       └── PermissionCheckTest.kt
-│   │   │
-│   │   └── androidTest/java/com/security/app/
-│   │       ├── ExampleInstrumentedTest.kt
-│   │       ├── ui/
-│   │       │   ├── DashboardTest.kt
-│   │       │   └── WebScannerTest.kt
-│   │       ├── security/
-│   │       │   └── KeystoreTest.kt
-│   │       └── role/
-│   │           └── RoleNavigationTest.kt
-│   │
-│   └── proguard-rules.pro
+└── 📁 app/
+    │
+    ├── 📁 manifests/
+    │   └── 📄 AndroidManifest.xml
+    │       ├── <manifest>
+    │       ├── <uses-permission> (INTERNET, BIOMETRIC, CAMERA, STORAGE...)
+    │       ├── <application>
+    │       ├── <activity> (MainActivity, RoleBasedActivity...)
+    │       ├── <service> (SecurityMonitorService, NotificationHelper...)
+    │       └── <receiver> (BootReceiver, ScreenLockReceiver...)
+    │
+    ├── 📁 java/                                         ← KOTLIN + JAVA
+    │   └── 📁 com/
+    │       └── 📁 security/
+    │           └── 📁 app/
+    │               │
+    │               ├── 📄 MainActivity.kt
+    │               ├── 📄 SecurityApplication.kt
+    │               │
+    │               ├── 📁 common/
+    │               │   ├── 📁 constants/
+    │               │   │   ├── 📄 AppConstants.kt
+    │               │   │   ├── 📄 SecurityCriteria.kt
+    │               │   │   ├── 📄 EvaluationCriteria.kt
+    │               │   │   └── 📄 RoleConstants.kt
+    │               │   ├── 📁 extensions/
+    │               │   │   ├── 📄 ContextExt.kt
+    │               │   │   ├── 📄 StringExt.kt
+    │               │   │   └── 📄 ViewExt.kt
+    │               │   ├── 📁 utils/
+    │               │   │   ├── 📄 EncryptionUtils.kt
+    │               │   │   ├── 📄 NetworkUtils.kt
+    │               │   │   ├── 📄 PermissionUtils.kt
+    │               │   │   └── 📄 BiometricUtils.kt
+    │               │   └── 📁 base/
+    │               │       ├── 📄 BaseActivity.kt
+    │               │       ├── 📄 BaseFragment.kt
+    │               │       ├── 📄 BaseViewModel.kt
+    │               │       └── 📄 BaseAdapter.kt
+    │               │
+    │               ├── 📁 data/
+    │               │   ├── 📁 local/
+    │               │   │   ├── 📁 database/
+    │               │   │   │   ├── 📄 AppDatabase.kt
+    │               │   │   │   ├── 📄 Converters.kt
+    │               │   │   │   ├── 📁 dao/
+    │               │   │   │   │   ├── 📄 UserDao.kt
+    │               │   │   │   │   ├── 📄 SessionDao.kt
+    │               │   │   │   │   ├── 📄 LogDao.kt
+    │               │   │   │   │   ├── 📄 DeviceDao.kt
+    │               │   │   │   │   ├── 📄 ReportDao.kt
+    │               │   │   │   │   └── 📄 ScanResultDao.kt
+    │               │   │   │   └── 📁 entities/
+    │               │   │   │       ├── 📄 UserEntity.kt
+    │               │   │   │       ├── 📄 SessionEntity.kt
+    │               │   │   │       ├── 📄 SecurityLogEntity.kt
+    │               │   │   │       ├── 📄 TrustedDeviceEntity.kt
+    │               │   │   │       ├── 📄 ReportEntity.kt
+    │               │   │   │       └── 📄 WebScanEntity.kt
+    │               │   │   ├── 📁 preferences/
+    │               │   │   │   ├── 📄 EncryptedPrefs.kt
+    │               │   │   │   └── 📄 AppPrefs.kt
+    │               │   │   └── 📁 file/
+    │               │   │       ├── 📄 EncryptedFileManager.kt
+    │               │   │       ├── 📄 SecureContainer.kt
+    │               │   │       └── 📄 FileEncryptionEngine.kt
+    │               │   └── 📁 remote/
+    │               │       ├── 📁 api/
+    │               │       │   ├── 📄 ApiService.kt
+    │               │       │   ├── 📄 RetrofitClient.kt
+    │               │       │   └── 📁 endpoints/
+    │               │       │       ├── 📄 PolicyEndpoint.kt
+    │               │       │       ├── 📄 ReportEndpoint.kt
+    │               │       │       └── 📄 UpdateEndpoint.kt
+    │               │       ├── 📁 model/
+    │               │       │   ├── 📄 PolicyResponse.kt
+    │               │       │   ├── 📄 UpdateResponse.kt
+    │               │       │   └── 📄 LeakedPasswordResponse.kt
+    │               │       └── 📁 repository/
+    │               │           ├── 📄 UserRepository.kt
+    │               │           ├── 📄 SecurityRepository.kt
+    │               │           ├── 📄 ScanRepository.kt
+    │               │           └── 📄 PolicyRepository.kt
+    │               │
+    │               ├── 📁 domain/
+    │               │   ├── 📁 model/
+    │               │   │   ├── 📄 User.kt
+    │               │   │   ├── 📄 SecurityScore.kt
+    │               │   │   ├── 📄 Vulnerability.kt
+    │               │   │   └── 📄 Role.kt
+    │               │   └── 📁 usecase/
+    │               │       ├── 📁 auth/
+    │               │       │   ├── 📄 LoginUseCase.kt
+    │               │       │   ├── 📄 ValidateMfaUseCase.kt
+    │               │       │   ├── 📄 CheckBiometricUseCase.kt
+    │               │       │   └── 📄 GetCurrentRoleUseCase.kt
+    │               │       ├── 📁 scan/
+    │               │       │   ├── 📄 ScanWebUseCase.kt
+    │               │       │   ├── 📄 CheckPasswordStrengthUseCase.kt
+    │               │       │   └── 📄 ScanMalwareUseCase.kt
+    │               │       ├── 📁 encryption/
+    │               │       │   ├── 📄 EncryptFileUseCase.kt
+    │               │       │   ├── 📄 DecryptFileUseCase.kt
+    │               │       │   └── 📄 CreateSecureContainerUseCase.kt
+    │               │       ├── 📁 evaluation/
+    │               │       │   ├── 📄 EvaluateAllCriteriaUseCase.kt
+    │               │       │   ├── 📄 EvaluateSecurityCriteriaUseCase.kt
+    │               │       │   └── 📄 GenerateReportUseCase.kt
+    │               │       └── 📁 role/
+    │               │           ├── 📄 GetMenuByRoleUseCase.kt
+    │               │           ├── 📄 CheckPermissionUseCase.kt
+    │               │           └── 📄 GetRoleBasedUiUseCase.kt
+    │               │
+    │               ├── 📁 ui/
+    │               │   ├── 📁 rolebased/
+    │               │   │   ├── 📄 RoleBasedActivity.kt
+    │               │   │   ├── 📄 RoleMenuManager.kt
+    │               │   │   ├── 📄 RolePermissionChecker.kt
+    │               │   │   ├── 📁 superadmin/
+    │               │   │   │   ├── 📄 SuperAdminDashboardFragment.kt
+    │               │   │   │   ├── 📄 SuperAdminDashboardViewModel.kt
+    │               │   │   │   ├── 📄 UserManagementFragment.kt
+    │               │   │   │   └── 📄 UserManagementViewModel.kt
+    │               │   │   ├── 📁 secadmin/
+    │               │   │   │   ├── 📄 SecAdminDashboardFragment.kt
+    │               │   │   │   ├── 📄 SecAdminDashboardViewModel.kt
+    │               │   │   │   ├── 📄 PolicyConfigFragment.kt
+    │               │   │   │   └── 📄 PolicyConfigViewModel.kt
+    │               │   │   ├── 📁 auditor/
+    │               │   │   │   ├── 📄 AuditorDashboardFragment.kt
+    │               │   │   │   ├── 📄 AuditorDashboardViewModel.kt
+    │               │   │   │   ├── 📄 ReadOnlyReportFragment.kt
+    │               │   │   │   └── 📄 ReadOnlyReportViewModel.kt
+    │               │   │   ├── 📁 operator/
+    │               │   │   │   ├── 📄 OperatorDashboardFragment.kt
+    │               │   │   │   ├── 📄 OperatorDashboardViewModel.kt
+    │               │   │   │   ├── 📄 ActionPanelFragment.kt
+    │               │   │   │   └── 📄 ActionPanelViewModel.kt
+    │               │   │   ├── 📁 viewer/
+    │               │   │   │   ├── 📄 ViewerDashboardFragment.kt
+    │               │   │   │   ├── 📄 ViewerDashboardViewModel.kt
+    │               │   │   │   └── 📄 ReadOnlyDashboardFragment.kt
+    │               │   │   └── 📁 deviceuser/
+    │               │   │       ├── 📄 DeviceUserDashboardFragment.kt
+    │               │   │       ├── 📄 DeviceUserDashboardViewModel.kt
+    │               │   │       ├── 📄 PersonalSecurityFragment.kt
+    │               │   │       └── 📄 PersonalSecurityViewModel.kt
+    │               │   ├── 📁 auth/
+    │               │   │   ├── 📄 LoginFragment.kt
+    │               │   │   ├── 📄 LoginViewModel.kt
+    │               │   │   ├── 📄 RegisterFragment.kt
+    │               │   │   ├── 📄 RegisterViewModel.kt
+    │               │   │   ├── 📄 ForgotPasswordFragment.kt
+    │               │   │   ├── 📄 MfaVerifyFragment.kt
+    │               │   │   ├── 📄 BiometricAuthDialog.kt
+    │               │   │   └── 📁 account/
+    │               │   │       ├── 📄 AccountTypeSelector.kt
+    │               │   │       └── 📄 AccountSwitcher.kt
+    │               │   ├── 📁 dashboard/
+    │               │   │   ├── 📄 DashboardFragment.kt
+    │               │   │   ├── 📄 DashboardViewModel.kt
+    │               │   │   └── 📄 DashboardAdapter.kt
+    │               │   ├── 📁 session/
+    │               │   │   ├── 📄 SessionManagerFragment.kt
+    │               │   │   ├── 📄 SessionManagerViewModel.kt
+    │               │   │   └── 📄 SessionAdapter.kt
+    │               │   ├── 📁 device/
+    │               │   │   ├── 📄 TrustedDeviceFragment.kt
+    │               │   │   ├── 📄 TrustedDeviceViewModel.kt
+    │               │   │   └── 📄 DeviceAdapter.kt
+    │               │   ├── 📁 mfa/
+    │               │   │   ├── 📄 MfaSetupFragment.kt
+    │               │   │   ├── 📄 MfaVerifyFragment.kt
+    │               │   │   ├── 📄 MfaViewModel.kt
+    │               │   │   └── 📁 totp/
+    │               │   │       ├── 📄 TotpGenerator.kt
+    │               │   │       └── 📄 QrCodeScanner.kt
+    │               │   ├── 📁 history/
+    │               │   │   ├── 📄 SecurityHistoryFragment.kt
+    │               │   │   ├── 📄 SecurityHistoryViewModel.kt
+    │               │   │   ├── 📄 LogAdapter.kt
+    │               │   │   └── 📁 filter/
+    │               │   │       ├── 📄 LogFilterDialog.kt
+    │               │   │       └── 📄 LogFilterOptions.kt
+    │               │   ├── 📁 report/
+    │               │   │   ├── 📄 ReportFragment.kt
+    │               │   │   ├── 📄 ReportViewModel.kt
+    │               │   │   ├── 📁 pdf/
+    │               │   │   │   ├── 📄 PdfGenerator.kt
+    │               │   │   │   └── 📄 PdfExportService.kt
+    │               │   │   └── 📁 json/
+    │               │   │       └── 📄 JsonExporter.kt
+    │               │   ├── 📁 encryption/
+    │               │   │   ├── 📄 FileEncryptionFragment.kt
+    │               │   │   ├── 📄 FileEncryptionViewModel.kt
+    │               │   │   ├── 📄 SecureContainerFragment.kt
+    │               │   │   ├── 📄 SecureContainerViewModel.kt
+    │               │   │   ├── 📁 adapter/
+    │               │   │   │   ├── 📄 FileBrowserAdapter.kt
+    │               │   │   │   └── 📄 ContainerAdapter.kt
+    │               │   │   └── 📁 components/
+    │               │   │       ├── 📄 EncryptionProgressDialog.kt
+    │               │   │       ├── 📄 KeyManagementDialog.kt
+    │               │   │       └── 📄 ShamirShareDialog.kt
+    │               │   ├── 📁 malware/
+    │               │   │   ├── 📄 MalwareScanFragment.kt
+    │               │   │   ├── 📄 MalwareScanViewModel.kt
+    │               │   │   ├── 📁 scanner/
+    │               │   │   │   ├── 📄 ApkAnalyzer.kt
+    │               │   │   │   ├── 📄 PermissionAnalyzer.kt
+    │               │   │   │   └── 📄 SignatureChecker.kt
+    │               │   │   └── 📄 MalwareResultAdapter.kt
+    │               │   ├── 📁 password/
+    │               │   │   ├── 📄 PasswordManagerFragment.kt
+    │               │   │   ├── 📄 PasswordManagerViewModel.kt
+    │               │   │   ├── 📄 PasswordEntryDialog.kt
+    │               │   │   ├── 📁 adapter/
+    │               │   │   │   └── 📄 PasswordEntryAdapter.kt
+    │               │   │   └── 📁 keystore/
+    │               │   │       ├── 📄 KeystoreManager.kt
+    │               │   │       └── 📄 StrongBoxManager.kt
+    │               │   ├── 📁 network/
+    │               │   │   ├── 📄 NetworkMonitorFragment.kt
+    │               │   │   ├── 📄 NetworkMonitorViewModel.kt
+    │               │   │   ├── 📁 detector/
+    │               │   │   │   ├── 📄 RootDetector.kt
+    │               │   │   │   ├── 📄 ProxyDetector.kt
+    │               │   │   │   ├── 📄 MitmDetector.kt
+    │               │   │   │   └── 📄 VpnDetector.kt
+    │               │   │   └── 📁 service/
+    │               │   │       └── 📄 NetworkMonitorService.kt
+    │               │   ├── 📁 policy/
+    │               │   │   ├── 📄 SecurityPolicyFragment.kt
+    │               │   │   ├── 📄 SecurityPolicyViewModel.kt
+    │               │   │   ├── 📄 PolicyUpdater.kt
+    │               │   │   └── 📄 PolicyViewerAdapter.kt
+    │               │   ├── 📁 backup/
+    │               │   │   ├── 📄 BackupFragment.kt
+    │               │   │   ├── 📄 BackupViewModel.kt
+    │               │   │   ├── 📁 engine/
+    │               │   │   │   ├── 📄 BackupEngine.kt
+    │               │   │   │   ├── 📄 RestoreEngine.kt
+    │               │   │   │   └── 📄 E2eeBackup.kt
+    │               │   │   └── 📁 schedule/
+    │               │   │       ├── 📄 BackupScheduler.kt
+    │               │   │       └── 📄 BackupWorker.kt
+    │               │   ├── 📁 emergency/
+    │               │   │   ├── 📄 EmergencyFragment.kt
+    │               │   │   ├── 📄 EmergencyViewModel.kt
+    │               │   │   ├── 📄 RemoteWipeManager.kt
+    │               │   │   ├── 📄 LockdownManager.kt
+    │               │   │   └── 📄 EmergencyContactDialog.kt
+    │               │   ├── 📁 webscanner/
+    │               │   │   ├── 📄 WebScannerFragment.kt
+    │               │   │   ├── 📄 WebScannerViewModel.kt
+    │               │   │   ├── 📁 engines/
+    │               │   │   │   ├── 📄 XssEngine.kt
+    │               │   │   │   ├── 📄 SqlInjectionEngine.kt
+    │               │   │   │   ├── 📄 FileInclusionEngine.kt
+    │               │   │   │   ├── 📄 CommandInjectionEngine.kt
+    │               │   │   │   ├── 📄 HeaderChecker.kt
+    │               │   │   │   └── 📄 ApiSecurityEngine.kt
+    │               │   │   ├── 📁 model/
+    │               │   │   │   ├── 📄 Vulnerability.kt
+    │               │   │   │   └── 📄 ScanReport.kt
+    │               │   │   └── 📁 adapter/
+    │               │   │       └── 📄 VulnerabilityAdapter.kt
+    │               │   ├── 📁 passwordmeter/
+    │               │   │   ├── 📄 PasswordMeterFragment.kt
+    │               │   │   ├── 📄 PasswordMeterViewModel.kt
+    │               │   │   ├── 📁 strength/
+    │               │   │   │   ├── 📄 EntropyCalculator.kt
+    │               │   │   │   ├── 📄 PatternDetector.kt
+    │               │   │   │   ├── 📄 DictionaryChecker.kt
+    │               │   │   │   └── 📄 LeakedChecker.kt
+    │               │   │   ├── 📁 ui/
+    │               │   │   │   ├── 📄 PasswordStrengthBar.kt
+    │               │   │   │   └── 📄 StrengthIndicatorView.kt
+    │               │   │   └── 📁 result/
+    │               │   │       └── 📄 PasswordResultDialog.kt
+    │               │   ├── 📁 settings/
+    │               │   │   ├── 📄 SettingsFragment.kt
+    │               │   │   ├── 📄 SettingsViewModel.kt
+    │               │   │   └── 📁 preferences/
+    │               │   │       ├── 📄 SecurityPrefs.kt
+    │               │   │       └── 📄 NotificationPrefs.kt
+    │               │   └── 📁 common/
+    │               │       ├── 📄 LoadingDialog.kt
+    │               │       ├── 📄 ErrorDialog.kt
+    │               │       ├── 📄 ConfirmDialog.kt
+    │               │       ├── 📄 CustomSnackbar.kt
+    │               │       └── 📄 SecurityToast.kt
+    │               │
+    │               ├── 📁 network/
+    │               │   ├── 📁 wrapper/
+    │               │   │   ├── 📄 ApiWrapper.kt
+    │               │   │   ├── 📄 SecurityApiWrapper.kt
+    │               │   │   ├── 📄 WebScannerWrapper.kt
+    │               │   │   ├── 📄 PasswordWrapper.kt
+    │               │   │   └── 📄 SyncWrapper.kt
+    │               │   ├── 📁 interceptors/
+    │               │   │   ├── 📄 AuthInterceptor.kt
+    │               │   │   ├── 📄 EncryptionInterceptor.kt
+    │               │   │   └── 📄 LoggingInterceptor.kt
+    │               │   └── 📁 models/
+    │               │       ├── 📄 ApiResponse.kt
+    │               │       ├── 📄 ScanRequest.kt
+    │               │       ├── 📄 ScanResponse.kt
+    │               │       └── 📄 PasswordCheckRequest.kt
+    │               │
+    │               ├── 📁 security/
+    │               │   ├── 📁 crypto/
+    │               │   │   ├── 📄 AesEncryption.kt
+    │               │   │   ├── 📄 ChaCha20Encryption.kt
+    │               │   │   ├── 📄 KeyGenerator.kt
+    │               │   │   ├── 📄 KeyManager.kt
+    │               │   │   ├── 📄 ShamirSecretSharing.kt
+    │               │   │   └── 📄 SecureRandom.kt
+    │               │   ├── 📁 keystore/
+    │               │   │   ├── 📄 KeystoreHelper.kt
+    │               │   │   ├── 📄 StrongBoxHelper.kt
+    │               │   │   └── 📄 BiometricKeystore.kt
+    │               │   ├── 📁 integrity/
+    │               │   │   ├── 📄 PlayIntegrityChecker.kt
+    │               │   │   ├── 📄 SafetyNetHelper.kt
+    │               │   │   └── 📄 AppIntegrityVerifier.kt
+    │               │   ├── 📁 obfuscation/
+    │               │   │   ├── 📄 ProguardConfig.kt
+    │               │   │   └── 📄 StringObfuscator.kt
+    │               │   └── 📁 validator/
+    │               │       ├── 📄 InputValidator.kt
+    │               │       ├── 📄 PasswordValidator.kt
+    │               │       └── 📄 UrlValidator.kt
+    │               │
+    │               ├── 📁 evaluation/
+    │               │   ├── 📄 EvaluationEngine.kt
+    │               │   ├── 📁 criteria/
+    │               │   │   ├── 📄 CriteriaGroup.kt
+    │               │   │   ├── 📄 Criterion.kt
+    │               │   │   └── 📄 CriterionWeight.kt
+    │               │   ├── 📁 calculator/
+    │               │   │   ├── 📄 ScoreCalculator.kt
+    │               │   │   ├── 📄 WeightedScoreCalculator.kt
+    │               │   │   └── 📄 CategoryScoreCalculator.kt
+    │               │   ├── 📁 checker/
+    │               │   │   ├── 📄 PasswordCriteriaChecker.kt
+    │               │   │   ├── 📄 WebXssCriteriaChecker.kt
+    │               │   │   ├── 📄 WebSqlCriteriaChecker.kt
+    │               │   │   ├── 📄 FileInclusionChecker.kt
+    │               │   │   ├── 📄 HeaderSecurityChecker.kt
+    │               │   │   ├── 📄 ApiSecurityChecker.kt
+    │               │   │   ├── 📄 EncryptionChecker.kt
+    │               │   │   ├── 📄 AuthenticationChecker.kt
+    │               │   │   ├── 📄 NetworkChecker.kt
+    │               │   │   ├── 📄 AntiTamperChecker.kt
+    │               │   │   ├── 📄 SessionChecker.kt
+    │               │   │   ├── 📄 LoggingChecker.kt
+    │               │   │   ├── 📄 BackupChecker.kt
+    │               │   │   └── 📄 PolicyChecker.kt
+    │               │   └── 📁 report/
+    │               │       ├── 📄 DetailedReportGenerator.kt
+    │               │       ├── 📄 SummaryReportGenerator.kt
+    │               │       └── 📄 CriteriaStatus.kt
+    │               │
+    │               ├── 📁 di/
+    │               │   ├── 📄 AppModule.kt
+    │               │   ├── 📄 DatabaseModule.kt
+    │               │   ├── 📄 NetworkModule.kt
+    │               │   ├── 📄 SecurityModule.kt
+    │               │   ├── 📄 RepositoryModule.kt
+    │               │   └── 📄 UseCaseModule.kt
+    │               │
+    │               ├── 📁 service/
+    │               │   ├── 📄 SecurityMonitorService.kt
+    │               │   ├── 📄 AutoScanWorker.kt
+    │               │   ├── 📄 ReportScheduler.kt
+    │               │   ├── 📄 PolicySyncWorker.kt
+    │               │   └── 📄 NotificationHelper.kt
+    │               │
+    │               ├── 📁 broadcast/
+    │               │   ├── 📄 BootReceiver.kt
+    │               │   ├── 📄 ScreenLockReceiver.kt
+    │               │   └── 📄 PackageChangeReceiver.kt
+    │               │
+    │               └── 📁 widget/
+    │                   ├── 📄 SecurityScoreWidget.kt
+    │                   └── 📄 QuickScanWidget.kt
+    │
+    ├── 📁 res/                                               ← TÀI NGUYÊN
+    │   │
+    │   ├── 📁 drawable/
+    │   │   ├── 📄 ic_launcher_foreground.xml
+    │   │   ├── 📄 ic_launcher_background.xml
+    │   │   ├── 📄 ic_menu_dashboard.xml
+    │   │   ├── 📄 ic_menu_webscan.xml
+    │   │   ├── 📄 ic_menu_password.xml
+    │   │   ├── 📄 ic_menu_encryption.xml
+    │   │   ├── 📄 ic_role_superadmin.xml
+    │   │   ├── 📄 ic_role_secadmin.xml
+    │   │   ├── 📄 ic_role_auditor.xml
+    │   │   ├── 📄 ic_role_operator.xml
+    │   │   ├── 📄 ic_role_viewer.xml
+    │   │   ├── 📄 ic_role_deviceuser.xml
+    │   │   └── 📄 ...
+    │   │
+    │   ├── 📁 drawable-v24/
+    │   │   └── 📄 ic_launcher_foreground.xml
+    │   │
+    │   ├── 📁 layout/
+    │   │   ├── 📄 activity_main.xml
+    │   │   ├── 📄 activity_role_based.xml
+    │   │   ├── 📄 fragment_dashboard.xml
+    │   │   ├── 📄 fragment_login.xml
+    │   │   ├── 📄 fragment_register.xml
+    │   │   ├── 📄 fragment_web_scanner.xml
+    │   │   ├── 📄 fragment_password_meter.xml
+    │   │   ├── 📄 fragment_file_encryption.xml
+    │   │   ├── 📄 dialog_encryption_key.xml
+    │   │   ├── 📄 nav_header_sidebar.xml
+    │   │   │
+    │   │   ├── 📁 superadmin/
+    │   │   │   ├── 📄 fragment_superadmin_dashboard.xml
+    │   │   │   └── 📄 fragment_user_management.xml
+    │   │   ├── 📁 secadmin/
+    │   │   │   ├── 📄 fragment_secadmin_dashboard.xml
+    │   │   │   └── 📄 fragment_policy_config.xml
+    │   │   ├── 📁 auditor/
+    │   │   │   ├── 📄 fragment_auditor_dashboard.xml
+    │   │   │   └── 📄 fragment_readonly_report.xml
+    │   │   ├── 📁 operator/
+    │   │   │   ├── 📄 fragment_operator_dashboard.xml
+    │   │   │   └── 📄 fragment_action_panel.xml
+    │   │   ├── 📁 viewer/
+    │   │   │   ├── 📄 fragment_viewer_dashboard.xml
+    │   │   │   └── 📄 fragment_readonly_dashboard.xml
+    │   │   └── 📁 deviceuser/
+    │   │       ├── 📄 fragment_deviceuser_dashboard.xml
+    │   │       └── 📄 fragment_personal_security.xml
+    │   │
+    │   ├── 📁 menu/
+    │   │   ├── 📄 navigation_menu_superadmin.xml
+    │   │   ├── 📄 navigation_menu_secadmin.xml
+    │   │   ├── 📄 navigation_menu_auditor.xml
+    │   │   ├── 📄 navigation_menu_operator.xml
+    │   │   ├── 📄 navigation_menu_viewer.xml
+    │   │   └── 📄 navigation_menu_deviceuser.xml
+    │   │
+    │   ├── 📁 mipmap-hdpi/
+    │   │   ├── 📄 ic_launcher.webp
+    │   │   └── 📄 ic_launcher_round.webp
+    │   │
+    │   ├── 📁 mipmap-mdpi/
+    │   │   ├── 📄 ic_launcher.webp
+    │   │   └── 📄 ic_launcher_round.webp
+    │   │
+    │   ├── 📁 mipmap-xhdpi/
+    │   │   ├── 📄 ic_launcher.webp
+    │   │   └── 📄 ic_launcher_round.webp
+    │   │
+    │   ├── 📁 mipmap-xxhdpi/
+    │   │   ├── 📄 ic_launcher.webp
+    │   │   └── 📄 ic_launcher_round.webp
+    │   │
+    │   ├── 📁 mipmap-xxxhdpi/
+    │   │   ├── 📄 ic_launcher.webp
+    │   │   └── 📄 ic_launcher_round.webp
+    │   │
+    │   ├── 📁 navigation/
+    │   │   ├── 📄 nav_graph_superadmin.xml
+    │   │   ├── 📄 nav_graph_secadmin.xml
+    │   │   ├── 📄 nav_graph_auditor.xml
+    │   │   ├── 📄 nav_graph_operator.xml
+    │   │   ├── 📄 nav_graph_viewer.xml
+    │   │   └── 📄 nav_graph_deviceuser.xml
+    │   │
+    │   ├── 📁 raw/
+    │   │   ├── 📄 default_policy.json
+    │   │   ├── 📄 common_passwords.txt
+    │   │   └── 📄 xss_payloads.txt
+    │   │
+    │   ├── 📁 values/
+    │   │   ├── 📄 colors.xml
+    │   │   ├── 📄 strings.xml
+    │   │   ├── 📄 themes.xml
+    │   │   ├── 📄 dimens.xml
+    │   │   ├── 📄 security_criteria.xml
+    │   │   ├── 📄 bools.xml
+    │   │   └── 📄 integers.xml
+    │   │
+    │   └── 📁 xml/
+    │       ├── 📄 backup_rules.xml
+    │       ├── 📄 data_extraction_rules.xml
+    │       └── 📄 widget_info.xml
+    │
+    ├── 📁 assets/
+    │   ├── 📁 ml_models/
+    │   │   └── 📄 xss_detector.tflite
+    │   └── 📁 security/
+    │       └── 📄 ca_certificates.bks
+    │
+    ├── 📁 native/
+    │   ├── 📄 native-lib.cpp
+    │   ├── 📄 encryption_native.cpp
+    │   ├── 📄 anti_debug.cpp
+    │   └── 📄 CMakeLists.txt
+    │
+    ├── 📁 test/                                         ← UNIT TEST
+    │   └── 📁 java/
+    │       └── 📁 com/
+    │           └── 📁 security/
+    │               └── 📁 app/
+    │                   ├── 📄 ExampleUnitTest.kt
+    │                   ├── 📁 security/
+    │                   │   ├── 📄 EncryptionTest.kt
+    │                   │   ├── 📄 PasswordStrengthTest.kt
+    │                   │   └── 📄 WebScannerTest.kt
+    │                   ├── 📁 evaluation/
+    │                   │   └── 📄 CriteriaEvaluationTest.kt
+    │                   └── 📁 role/
+    │                       ├── 📄 RoleBasedUiTest.kt
+    │                       └── 📄 PermissionCheckTest.kt
+    │
+    ├── 📁 androidTest/                                 ← INSTRUMENTATION TEST
+    │   └── 📁 java/
+    │       └── 📁 com/
+    │           └── 📁 security/
+    │               └── 📁 app/
+    │                   ├── 📄 ExampleInstrumentedTest.kt
+    │                   ├── 📁 ui/
+    │                   │   ├── 📄 DashboardTest.kt
+    │                   │   └── 📄 WebScannerTest.kt
+    │                   ├── 📁 security/
+    │                   │   └── 📄 KeystoreTest.kt
+    │                   └── 📁 role/
+    │                       └── 📄 RoleNavigationTest.kt
+    │
+    ├── 📄 build.gradle.kts (Module: app)
+    └── 📄 proguard-rules.pro
 │
-├── gradle/
-│   ├── libs.versions.toml
-│   └── wrapper/
-│       ├── gradle-wrapper.jar
-│       └── gradle-wrapper.properties
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        2. THƯ MỤC GRADLE SCRIPTS                             ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
 │
-├── gradlew
-├── gradlew.bat
+├── 📄 build.gradle.kts (Project: SecurityAuditApp)
+├── 📄 settings.gradle.kts
+├── 📄 gradle.properties
 │
-├── .gitignore
-├── build.gradle.kts (Project level)
-├── settings.gradle.kts
-├── local.properties
+├── 📁 gradle/
+│   └── 📁 wrapper/
+│       ├── 📦 gradle-wrapper.jar
+│       └── 📄 gradle-wrapper.properties
 │
-└── README.md
+├── 📄 gradlew
+├── 📄 gradlew.bat
+│
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          3. CÁC THÀNH PHẦN KHÁC                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+│
+├── 📁 .idea/                                         (Thư mục ẩn - tự động tạo)
+├── 📁 .gradle/                                       (Thư mục ẩn - tự động tạo)
+│
+├── 📄 .gitignore
+├── 📄 local.properties                               (Tự động tạo - chứa SDK path)
+└── 📄 README.md
